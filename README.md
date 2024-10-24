@@ -1,1 +1,1 @@
-# SHINU4RATHOD-Data-Scientist-Intern-Zidio-Development
+# Data-Scientist-Intern-Zidio-Development
