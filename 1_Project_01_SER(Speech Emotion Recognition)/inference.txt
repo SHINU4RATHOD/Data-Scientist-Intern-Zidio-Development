@@ -1,0 +1,94 @@
+'''Business Understanding
+    Business Problem: Speech Emotion Recognition (SER)
+    In today’s competitive landscape, businesses face challenges in understanding customer sentiment, improving user experience, and enhancing engagement across various channels. Traditional methods of feedback collection often fail to capture the emoonal nuances of customer interactions, leading to missed opportunities for improvement and innovation. Specifically, in industries like customer service, mental health, and entertainment, understanding the emotional state of users through their speech can significantly impact service delivery and product development.
+
+    
+
+
+Business Solution: Implement a Speech Emotion Recognition (SER) system utilizing advanced machine learning techniques and audio feature    extraction (e.g., MFCCs) to analyze and interpret customer emotions in real time. This automated solution enhances customer insights,       increases operational efficiency, and enables data-driven decision-making, ultimately driving customer satisfaction and loyalty.
+
+
+Data Understanding: TESS (Toronto emotional speech set):  dataset for emotional speech analysis.
+The TESS (Toronto Emotional Speech Set) dataset comprises audio recordings of actors speaking in different emotional tones. It includes various emotions like happiness, sadness, anger, fear, and neutrality. Each recording is carefully annotated, making it valuable for training and evaluating speech emotion recognition models in various applications.
+
+    
+tech stack: 
+Programming Languages: Python
+Libraries and Frameworks: numpy, pandas, matplotlib, Seaborn,TensorFlow & Keras, Librosa
+Other Technologies & Development Environment: Git, Anaconda, Kaggle Notebook
+deployment tool: Streamlit
+'''
+
+
+
+
+###### feature extraction techs
+Chroma Features: These represent the energy distribution across the twelve different pitch classes. They are useful for capturing harmonic content and can help in identifying emotional tone.
+
+Spectral Features: This includes various attributes derived from the audio spectrum, such as:
+
+Spectral Centroid: Indicates where the center of mass of the spectrum is located and can give insights into the brightness of the sound.
+Spectral Bandwidth: Measures the width of the spectrum and can indicate how “sharp” or “dull” a sound is.
+Spectral Flatness: Reflects how flat or peaky the spectrum is, which can help differentiate between harmonic and non-harmonic sounds.
+Zero-Crossing Rate (ZCR): This measures the rate at which the signal changes from positive to negative or back. It can provide information about the noisiness or smoothness of the audio signal.
+
+Root Mean Square Energy (RMSE): This represents the energy of the audio signal and can help indicate loudness, which might relate to the emotional state being expressed.
+
+Linear Predictive Coding (LPC): This is a method used to represent the spectral envelope of a digital signal. It’s useful for capturing the formant structure of speech.
+
+Wavelet Transform: Unlike traditional Fourier transforms, wavelet transforms provide a time-frequency analysis of the signal, allowing you to capture both frequency and temporal information.
+
+Formants: These are the resonant frequencies of the vocal tract and can be crucial for distinguishing different vowel sounds, which may correlate with different emotional states.
+
+
+
+
+################ overfitting model to generalize the model(model generalize better by creating diverse training data.)
+1. data augmentation tech
+. Time Stretching: Stretch or compress the audio without altering the pitch.
+. Pitch Shifting: Modify the pitch of the audio.
+. Noise Injection: Add random noise to the audio.
+. Shifting: Shift the audio along the time axis.
+. Cropping: Randomly cut small parts of the audio.
+
+
+2. Regularization:
+. Dropout
+. L2 Regularization
+from keras import regularizers
+model = Sequential([
+    LSTM(256, return_sequences=False, input_shape=(40,1), kernel_regularizer=regularizers.l2(0.01)),
+    Dense(128, activation='relu', kernel_regularizer=regularizers.l2(0.01)),
+    Dense(64, activation='relu', kernel_regularizer=regularizers.l2(0.01)),
+    Dropout(0.5),
+    Dense(7, activation='softmax')
+])
+
+
+3. Reduce Model Complexity:
+. Reduce the number of LSTM units from 256 to 128.
+
+
+4. Early Stopping:
+# IMPORT LIBRARIES TO MONITOR AND CONTROL TRAINING
+from keras.callbacks import ModelCheckpoint, EarlyStopping
+checkpoint = ModelCheckpoint("mymodel.keras", monitor='val_accuracy', verbose=1, save_best_only=True, save_weights_only=False)
+early = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=5, verbose=1, mode='auto')
+hist = model.fit(x=train_ds, validation_data=val_ds, epochs=20, validation_steps=5, callbacks=[checkpoint, early])
+
+
+5. Cross-Validation:
+6. Tune Learning Rate:
+7. Use Pre-trained Models:
+using pre-trained models like VGGish or OpenL3 for audio feature extraction
+
+
+
+
+
+# what else we can do and add into project
+.EDA
+.
+
+
+kaggle notebook : https://www.kaggle.com/code/shinnurathod/ser1-speech-emotion-recognition
